@@ -5,7 +5,7 @@ describe ("Test Case 16: Place Order: Login before Checkout", ()=>{
 it ("Navigate to url 'https://www.automationexercise.com'", ()=>{
 
     cy.visit('/');
-    cy.url().should("contains", "automationexercise.com");
+    cy.url().should("contains", "automationexercise.comxxxxxxxxxxxxx");
 
 });
 
