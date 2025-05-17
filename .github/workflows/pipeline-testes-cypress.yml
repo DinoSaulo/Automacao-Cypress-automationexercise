@@ -1,38 +1,38 @@
-# Nome da pipeline - exibe o tipo de trigger que acionou a execução
-name: Pipeline de testes do Ecommerce
+# Nome da pipeline exibindo qual gatilho acionou a execução
+name: Pipelina de testes do Ecommerce
 run-name: ${{ github.event_name }}
 
-# Gatilho para execução: roda automaticamente em push para a branch main
 on:
+  # Gatilho 1: Push na branch main
   push:
     branches: [ main ]
 
+  # Gatilho 2: Execução agendada - toda sexta-feira às 18h (15h UTC)
+  schedule:
+    - cron: '0 15 * * 5'
 jobs:
   run-cypress-tests:
-    # Define o sistema operacional do runner
     runs-on: ubuntu-latest
 
     steps:
-      # Passo 1: Faz checkout do código do repositório
+      # Checkout do código-fonte
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      # Passo 2: Configura o Node.js na versão 20.x
+      # Configuração do Node.js
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
 
-      # Passo 3: Instala as dependências definidas no package-lock.json
+      # Instalação das dependências do projeto
       - name: 📦 Install dependencies
         run: npm ci
 
-      # Passo 4: Executa os testes automatizados com Cypress no Chrome, modo headless
+      # Execução dos testes automatizados com Cypress
       - name: 🚀 Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
           config-file: cypress.config.js
-          browser: chrome
+          browser: ${{ github.event.inputs.browser || 'chrome' }}  # Usa o navegador informado ou 'chrome' como fallback
           headless: true
-
-     
