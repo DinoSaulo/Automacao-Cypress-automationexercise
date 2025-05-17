@@ -49,3 +49,13 @@ jobs:
           config-file: cypress.config.js
           browser: ${{ github.event.inputs.browser || 'chrome' }}  # Usa o navegador informado ou 'chrome' como fallback
           headless: true
+
+       # Salvamento de artefatos se os testes falharem
+      - name: 📁 Save Cypress artifacts (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
